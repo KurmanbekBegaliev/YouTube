@@ -23,6 +23,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
     }
 
+
+
     override fun initListeners() {
     }
 
