@@ -14,6 +14,8 @@ import com.example.youtube.R
 import com.example.youtube.base.BaseFragment
 import com.example.youtube.base.BaseViewModel
 import com.example.youtube.databinding.FragmentPlaylistBinding
+import com.example.youtube.model.Item
+import com.example.youtube.model.custom.PlaylistItem
 
 class PlaylistFragment : BaseFragment<FragmentPlaylistBinding, PlaylistViewModel>() {
     override val viewModel: PlaylistViewModel by lazy {
@@ -47,8 +49,8 @@ class PlaylistFragment : BaseFragment<FragmentPlaylistBinding, PlaylistViewModel
         }
     }
 
-    private fun onItemClick(id: String) {
-        findNavController().navigate(R.id.detailFragment, bundleOf("id" to id))
+    private fun onItemClick(id: String, item: PlaylistItem) {
+        findNavController().navigate(R.id.detailFragment, bundleOf("id" to id, "item" to item))
     }
 
 }
