@@ -5,4 +5,5 @@
     <string name="description">Description</string>
     <string name="emotional_well_being">Emotional Well-being</string>
     <string name="video_count">%s video series</string>
+    <string name="try_again">Try again</string>
 </resources>
