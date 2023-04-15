@@ -15,6 +15,6 @@ class PlaylistViewModel : BaseViewModel() {
 
     private val repository = Repository()
 
-    val playlist: LiveData<Playlist> = repository.getPlaylist()
+    val playlist: LiveData<Playlist> = repository.getPlaylist(5)
 
 }
