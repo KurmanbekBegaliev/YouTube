@@ -20,8 +20,4 @@
         android:name="com.example.youtube.ui.video.VideoFragment"
         android:label="fragment_video"
         tools:layout="@layout/fragment_video" />
-    <fragment
-        android:id="@+id/noInternetFragment"
-        android:name="com.example.youtube.ui.nointernet.NoInternetFragment"
-        android:label="NoInternetFragment" />
 </navigation>

@@ -1,16 +1,20 @@
 package com.example.youtube
 
 import android.app.Application
-import com.example.youtube.data.local.Repository
+import androidx.room.Room
+import com.example.youtube.data.local.AppDatabase
 
 class App : Application() {
 
-    override fun onCreate() {
-        super.onCreate()
-        repository = Repository()
+    companion object {
+        lateinit var db : AppDatabase
     }
 
-    companion object {
-        lateinit var repository: Repository
+    override fun onCreate() {
+        super.onCreate()
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "playlist"
+        ).allowMainThreadQueries().build()
     }
 }

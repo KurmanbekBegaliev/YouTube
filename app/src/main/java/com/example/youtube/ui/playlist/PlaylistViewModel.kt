@@ -1,20 +1,38 @@
 package com.example.youtube.ui.playlist
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import com.example.youtube.base.BaseViewModel
-import com.example.youtube.data.local.Repository
-import com.example.youtube.data.remote.RetrofitClient
+import com.example.youtube.data.Repository
+import com.example.youtube.data.remote.Resource
 import com.example.youtube.model.Playlist
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class PlaylistViewModel : BaseViewModel() {
 
-    private val repository = Repository()
 
-    val playlist: LiveData<Playlist> = repository.getPlaylist(5)
+
+    private val repository = Repository()
+    private val setPlaylistLiveData = MutableLiveData<Playlist>()
+    private val getPlaylistLiveData = MutableLiveData<Boolean>()
+
+
+    val playlist: LiveData<Resource<Playlist>> = repository.getPlaylist(5)
+
+    val getPlaylistDb = getPlaylistLiveData.switchMap {
+        repository.getPlaylistDb()
+    }
+
+    val setPlaylistDb = setPlaylistLiveData.switchMap {
+        repository.setPlaylistDb(it)
+    }
+
+    fun setPlaylistDb(playlist : Playlist) {
+        setPlaylistLiveData.postValue(playlist)
+    }
+
+    fun getPlaylistDb() {
+        getPlaylistLiveData.postValue(true)
+    }
 
 }

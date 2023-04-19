@@ -1,26 +1,26 @@
 package com.example.youtube
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.findNavController
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.example.youtube.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private  lateinit var binding : ActivityMainBinding
-    private lateinit var connectivityObserver: ConnectivityObserver
+    private lateinit var binding : ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        connectivityObserver = NetworkConnectivityObserver(applicationContext)
-        if (connectivityObserver.observe().toString() != ConnectivityObserver.Status.Available.toString()) {
-            findNavController().navigate(R.id.noInternetFragment)
+        val networkConnection = NetworkConnection(applicationContext)
+        networkConnection.observe(this){
+            if (it) {
+                binding.contentNoInternet.root.visibility = View.GONE
+            } else {
+                binding.contentNoInternet.root.visibility = View.VISIBLE
+            }
         }
-
-
 
     }
 }
