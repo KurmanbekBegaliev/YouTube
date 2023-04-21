@@ -5,23 +5,23 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.youtube.NetworkConnection
 import com.example.youtube.R
 import com.example.youtube.base.BaseFragment
 import com.example.youtube.data.remote.Status
 import com.example.youtube.databinding.FragmentPlaylistBinding
 import com.example.youtube.model.custom.PlaylistItem
 import com.example.youtube.utils.showToast
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistFragment : BaseFragment<FragmentPlaylistBinding, PlaylistViewModel>() {
-    override val viewModel: PlaylistViewModel by lazy {
-        ViewModelProvider(this)[PlaylistViewModel::class.java]
-    }
+    override val viewModel: PlaylistViewModel by viewModel()
 
     private lateinit var playlistAdapter : PlaylistAdapter
+
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -31,7 +31,6 @@ class PlaylistFragment : BaseFragment<FragmentPlaylistBinding, PlaylistViewModel
     }
 
     override fun initViews() {
-        viewModel.getPlaylistDb()
         playlistAdapter = PlaylistAdapter(requireContext(), this::onItemClick)
         binding.rvPlaylists.apply {
             adapter = playlistAdapter
@@ -54,6 +53,17 @@ class PlaylistFragment : BaseFragment<FragmentPlaylistBinding, PlaylistViewModel
     }
 
     override fun initObservers() {
+        val networkConnection = NetworkConnection(requireActivity())
+        networkConnection.observe(viewLifecycleOwner) {
+            if (it) makeRequest()
+        }
+
+        viewModel.getPlaylistDb.observe(viewLifecycleOwner){
+            Log.e("TAG", "DataBase: ${it.data}" )
+        }
+    }
+
+    private fun makeRequest() {
         viewModel.playlist.observe(viewLifecycleOwner){
             binding.progress.isVisible = it.status == Status.LOADING
             when(it.status) {
@@ -65,9 +75,6 @@ class PlaylistFragment : BaseFragment<FragmentPlaylistBinding, PlaylistViewModel
                 else -> {}
             }
 
-        }
-        viewModel.getPlaylistDb.observe(viewLifecycleOwner){
-            Log.e("TAG", "DataBase: ${it.data}", )
         }
     }
 

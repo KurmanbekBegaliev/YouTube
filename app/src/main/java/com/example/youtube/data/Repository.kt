@@ -2,15 +2,14 @@ package com.example.youtube.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.example.youtube.App
+import com.example.youtube.data.local.AppDatabase
+import com.example.youtube.data.remote.ApiService
 import com.example.youtube.data.remote.Resource
-import com.example.youtube.data.remote.RetrofitClient
 import com.example.youtube.model.Playlist
 import kotlinx.coroutines.Dispatchers
 
-class Repository {
+class Repository(private val apiService: ApiService, private val db : AppDatabase) {
 
-    private val apiService = RetrofitClient.create()
 
     fun getPlaylistItem(id: String) : LiveData<Resource<Playlist>> = liveData(Dispatchers.IO) {
         emit(Resource.loading())
@@ -34,12 +33,12 @@ class Repository {
 
     fun setPlaylistDb(playlist : Playlist) : LiveData<Resource<Boolean>> = liveData(Dispatchers.IO) {
         emit(Resource.loading())
-        App.db.dao().setPlaylist(playlist)
+        db.dao().setPlaylist(playlist)
         emit(Resource.success(true))
     }
 
     fun getPlaylistDb(): LiveData<Resource<Playlist>> = liveData(Dispatchers.IO) {
         emit(Resource.loading())
-        emit(Resource.success(App.db.dao().getPlaylist()))
+        emit(Resource.success(db.dao().getPlaylist()))
     }
 }

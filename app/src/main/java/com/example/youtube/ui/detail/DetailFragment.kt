@@ -4,23 +4,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.youtube.NetworkConnection
 import com.example.youtube.R
 import com.example.youtube.base.BaseFragment
 import com.example.youtube.data.remote.Status
 import com.example.youtube.databinding.FragmentDetailBinding
 import com.example.youtube.model.custom.PlaylistItem
 import com.example.youtube.utils.showToast
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
     private lateinit var detailsAdapter: DetailsAdapter
 
-    override val viewModel: DetailViewModel by lazy {
-        ViewModelProvider(this)[DetailViewModel::class.java]
-    }
+    override val viewModel: DetailViewModel by viewModel()
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,
@@ -30,7 +29,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
     }
 
     override fun initViews() {
-        val item = arguments?.getSerializable("item") as PlaylistItem
+        @Suppress("DEPRECATION") val item = arguments?.getSerializable("item") as PlaylistItem
         binding.apply {
             tvPlaylistItemTitle.text = item.title.toString()
             tvPlaylistItemDescription.text = item.des.toString()
@@ -50,6 +49,13 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
     }
 
     override fun initObservers() {
+        val networkConnection = NetworkConnection(requireActivity())
+        networkConnection.observe(viewLifecycleOwner) {
+            if (it) makeRequest()
+        }
+    }
+
+    private fun makeRequest() {
         val id = arguments?.getString("id")
         if (id != null) {
             viewModel.getPlaylistItems(id).observe(viewLifecycleOwner) {

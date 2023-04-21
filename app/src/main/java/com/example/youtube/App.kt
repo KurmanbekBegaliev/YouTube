@@ -1,20 +1,22 @@
 package com.example.youtube
 
 import android.app.Application
-import androidx.room.Room
-import com.example.youtube.data.local.AppDatabase
+import com.example.youtube.di.dbModule
+import com.example.youtube.di.networkModule
+import com.example.youtube.di.repoModule
+import com.example.youtube.di.viewModelModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class App : Application() {
 
-    companion object {
-        lateinit var db : AppDatabase
-    }
 
     override fun onCreate() {
         super.onCreate()
-        db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "playlist"
-        ).allowMainThreadQueries().build()
+        startKoin {
+            androidContext(this@App)
+            modules(listOf(networkModule, repoModule, viewModelModule, dbModule))
+        }
     }
+
 }

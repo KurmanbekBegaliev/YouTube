@@ -1,8 +1,6 @@
 package com.example.youtube
 
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkInfo
@@ -23,7 +21,7 @@ class NetworkConnection(private val context: Context) : LiveData<Boolean>() {
 
     override fun onInactive() {
         super.onInactive()
-        connectivityManager.unregisterNetworkCallback(connectionCallback())
+//        connectivityManager.unregisterNetworkCallback(connectionCallback())
     }
 
     private fun connectionCallback() : ConnectivityManager.NetworkCallback {
@@ -45,11 +43,5 @@ class NetworkConnection(private val context: Context) : LiveData<Boolean>() {
         val networkConnection: NetworkInfo? = connectivityManager.activeNetworkInfo
         postValue(networkConnection?.isConnected == true)
 
-    }
-
-    private val networkReceiver = object : BroadcastReceiver(){
-        override fun onReceive(p0: Context?, p1: Intent?) {
-            updateNetworkConnection()
-        }
     }
 }

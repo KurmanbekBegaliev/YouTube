@@ -8,13 +8,14 @@ import com.example.youtube.data.Repository
 import com.example.youtube.data.remote.Resource
 import com.example.youtube.model.Playlist
 
-class PlaylistViewModel : BaseViewModel() {
+class PlaylistViewModel(private val repository: Repository) : BaseViewModel() {
 
-
-
-    private val repository = Repository()
     private val setPlaylistLiveData = MutableLiveData<Playlist>()
     private val getPlaylistLiveData = MutableLiveData<Boolean>()
+
+    init {
+        getPlaylistDb()
+    }
 
 
     val playlist: LiveData<Resource<Playlist>> = repository.getPlaylist(5)
@@ -23,9 +24,9 @@ class PlaylistViewModel : BaseViewModel() {
         repository.getPlaylistDb()
     }
 
-    val setPlaylistDb = setPlaylistLiveData.switchMap {
-        repository.setPlaylistDb(it)
-    }
+//    val setPlaylistDb = setPlaylistLiveData.switchMap {
+//        repository.setPlaylistDb(it)
+//    }
 
     fun setPlaylistDb(playlist : Playlist) {
         setPlaylistLiveData.postValue(playlist)
