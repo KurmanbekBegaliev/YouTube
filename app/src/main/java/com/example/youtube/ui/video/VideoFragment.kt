@@ -18,8 +18,7 @@ class VideoFragment : BaseFragment<FragmentVideoBinding, VideoViewModel>() {
     }
 
     override fun initViews() {
-        val youTubePlayerView: YouTubePlayerView = binding.youtubePlayerView
-        lifecycle.addObserver(youTubePlayerView)
+        lifecycle.addObserver(binding.youtubePlayerView)
 
     }
 
