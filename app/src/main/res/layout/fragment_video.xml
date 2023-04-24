@@ -1,14 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.video.VideoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+        android:id="@+id/youtube_player_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        app:videoId="Siu21nQJxUU"
+        app:autoPlay="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="24dp"
+        android:paddingHorizontal="@dimen/page_margin"
+        android:textSize="@dimen/big_text_size"
+        android:text="@string/emotional_well_being_healing_practices_for_children"
+        android:fontFamily="@font/fjalla_one_regular"
+        android:textColor="@color/dark_grey"
+        app:layout_constraintTop_toBottomOf="@id/youtube_player_view"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/page_margin"
+        android:text="@string/download"
+        android:textAllCaps="true"
+        android:drawableEnd="@drawable/group_18"
+        android:textColor="@color/red"
+        android:backgroundTint="@color/white"
+        app:strokeColor="@color/red"
+        app:strokeWidth="1dp"
+        app:cornerRadius="8dp"
+        android:layout_marginStart="@dimen/page_margin"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        app:layout_constraintStart_toStartOf="@id/tv_title"/>
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/noto_sans_regular"
+        android:paddingHorizontal="@dimen/page_margin"
+        android:paddingTop="8dp"
+        android:paddingBottom="24dp"
+        android:text="@string/refugee_children_often_have_suffered_many_losses_and_because_of_that_they_are_grieving_these_losses_they_re_grieving_the_loss_of_their_home_the_loss_of_the_life_they_knew_the_places_where_they_were_used_to_be_and_that_they_loved_to_go_the_loss_of_their_friends_and_certainly_the_loss_of_their_family_members_and_loved_ones_so_naturally_they_re_going_to_have_sadness"
+        android:textColor="@color/black"
+        android:textSize="@dimen/medium_text_size"
+        app:layout_constraintTop_toBottomOf="@id/btn_download"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

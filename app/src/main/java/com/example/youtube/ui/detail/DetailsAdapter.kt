@@ -7,7 +7,8 @@ import com.example.youtube.databinding.ItemDetailsBinding
 import com.example.youtube.model.Item
 import com.example.youtube.utils.loadImage
 
-class DetailsAdapter : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>() {
+class DetailsAdapter(private val onClick: () -> Unit) :
+    RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>() {
 
     private val detailsData = arrayListOf<Item>()
 
@@ -23,14 +24,18 @@ class DetailsAdapter : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>() 
 
     override fun getItemCount() = detailsData.size
 
-    override fun onBindViewHolder(holder: DetailsViewHolder, position: Int) {
-        holder.bind(detailsData[position])
-    }
 
     fun addData(items: List<Item>) {
         detailsData.clear()
         detailsData.addAll(items)
         notifyDataSetChanged()
+    }
+
+    override fun onBindViewHolder(holder: DetailsViewHolder, position: Int) {
+        holder.bind(detailsData[position])
+        holder.itemView.setOnClickListener {
+            onClick()
+        }
     }
 
     inner class DetailsViewHolder(private val binding: ItemDetailsBinding) :

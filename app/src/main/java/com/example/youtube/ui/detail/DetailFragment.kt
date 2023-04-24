@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.youtube.NetworkConnection
@@ -38,7 +39,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
 
 
-        detailsAdapter = DetailsAdapter()
+        detailsAdapter = DetailsAdapter(this::navigateToVideo)
         binding.rvDetails.apply {
             this.adapter = detailsAdapter
             this.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -69,6 +70,10 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
                 Log.e("TAG", "initObservers: $it")
             }
         }
+    }
+
+    private fun navigateToVideo() {
+        findNavController().navigate(R.id.videoFragment)
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.youtube
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.youtube.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -12,6 +13,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        installSplashScreen()
 
         val networkConnection = NetworkConnection(applicationContext)
         networkConnection.observe(this){
@@ -21,11 +23,6 @@ class MainActivity : AppCompatActivity() {
                 binding.contentNoInternet.root.visibility = View.VISIBLE
             }
         }
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
 
     }
 
