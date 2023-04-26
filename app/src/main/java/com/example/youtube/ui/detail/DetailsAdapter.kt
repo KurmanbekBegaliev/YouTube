@@ -1,5 +1,6 @@
 package com.example.youtube.ui.detail
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,7 +8,7 @@ import com.example.youtube.databinding.ItemDetailsBinding
 import com.example.youtube.model.Item
 import com.example.youtube.utils.loadImage
 
-class DetailsAdapter(private val onClick: () -> Unit) :
+class DetailsAdapter(private val onClick: (Item) -> Unit) :
     RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>() {
 
     private val detailsData = arrayListOf<Item>()
@@ -25,6 +26,7 @@ class DetailsAdapter(private val onClick: () -> Unit) :
     override fun getItemCount() = detailsData.size
 
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addData(items: List<Item>) {
         detailsData.clear()
         detailsData.addAll(items)
@@ -33,9 +35,6 @@ class DetailsAdapter(private val onClick: () -> Unit) :
 
     override fun onBindViewHolder(holder: DetailsViewHolder, position: Int) {
         holder.bind(detailsData[position])
-        holder.itemView.setOnClickListener {
-            onClick()
-        }
     }
 
     inner class DetailsViewHolder(private val binding: ItemDetailsBinding) :
@@ -44,6 +43,10 @@ class DetailsAdapter(private val onClick: () -> Unit) :
             binding.tvDetailsTitle.text = item.snippet?.title
             binding.tvDetailsVideoDuration.text = item.snippet?.publishedAt.toString()
             binding.ivDetailsVideo.loadImage(item.snippet?.thumbnails?.default?.url.toString())
+
+            binding.root.setOnClickListener {
+                onClick(item)
+            }
         }
 
     }

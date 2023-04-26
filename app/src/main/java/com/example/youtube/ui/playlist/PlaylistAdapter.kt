@@ -1,5 +1,6 @@
 package com.example.youtube.ui.playlist
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +11,7 @@ import com.example.youtube.model.Item
 import com.example.youtube.model.custom.PlaylistItem
 import com.example.youtube.utils.loadImage
 
-class PlaylistAdapter(private val context: Context, private val onClick: (String, PlaylistItem) -> Unit) :
+class PlaylistAdapter(private val context: Context, private val onClick: (Item, PlaylistItem) -> Unit) :
     RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>() {
 
     private val data = arrayListOf<Item>()
@@ -31,6 +32,7 @@ class PlaylistAdapter(private val context: Context, private val onClick: (String
         holder.bind(data[position])
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addData(items: List<Item>) {
         data.clear()
         data.addAll(items)
@@ -46,7 +48,7 @@ class PlaylistAdapter(private val context: Context, private val onClick: (String
                 context.getString(R.string.video_count, item.contentDetails?.itemCount.toString())
             binding.ivVideo.loadImage(item.snippet?.thumbnails?.default?.url.toString())
             binding.root.setOnClickListener {
-                onClick(item.id.toString(), forBundle(item))
+                onClick(item, forBundle(item))
             }
         }
 

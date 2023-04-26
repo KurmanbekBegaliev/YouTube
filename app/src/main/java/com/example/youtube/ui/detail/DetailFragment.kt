@@ -3,6 +3,7 @@ package com.example.youtube.ui.detail
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +13,9 @@ import com.example.youtube.R
 import com.example.youtube.base.BaseFragment
 import com.example.youtube.data.remote.Status
 import com.example.youtube.databinding.FragmentDetailBinding
+import com.example.youtube.model.Item
 import com.example.youtube.model.custom.PlaylistItem
+import com.example.youtube.ui.BundleKeys
 import com.example.youtube.utils.showToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -30,11 +33,13 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
     }
 
     override fun initViews() {
-        @Suppress("DEPRECATION") val item = arguments?.getSerializable("item") as PlaylistItem
+        @Suppress("DEPRECATION") val item =
+            arguments?.getSerializable(BundleKeys.PLAYLIST_ITEM_KEY) as PlaylistItem
         binding.apply {
             tvPlaylistItemTitle.text = item.title.toString()
             tvPlaylistItemDescription.text = item.des.toString()
-            tvPlaylistItemVideoCount.text = requireContext().getString(R.string.video_count, item.vCount.toString())
+            tvPlaylistItemVideoCount.text =
+                requireContext().getString(R.string.video_count, item.vCount.toString())
         }
 
 
@@ -57,7 +62,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
     }
 
     private fun makeRequest() {
-        val id = arguments?.getString("id")
+        val id = arguments?.getString(BundleKeys.PLAYLIST_TO_DETAIL_KEY)
         if (id != null) {
             viewModel.getPlaylistItems(id).observe(viewLifecycleOwner) {
                 binding.progress.isVisible = it.status == Status.LOADING
@@ -72,8 +77,11 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
         }
     }
 
-    private fun navigateToVideo() {
-        findNavController().navigate(R.id.videoFragment)
+    private fun navigateToVideo(item: Item) {
+        findNavController().navigate(
+            R.id.videoFragment,
+            bundleOf(BundleKeys.DETAIL_TO_VIDEO_KEY to item.snippet?.resourceId?.videoId)
+        )
     }
 
 }

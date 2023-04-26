@@ -13,14 +13,16 @@ import com.example.youtube.R
 import com.example.youtube.base.BaseFragment
 import com.example.youtube.data.remote.Status
 import com.example.youtube.databinding.FragmentPlaylistBinding
+import com.example.youtube.model.Item
 import com.example.youtube.model.custom.PlaylistItem
+import com.example.youtube.ui.BundleKeys
 import com.example.youtube.utils.showToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistFragment : BaseFragment<FragmentPlaylistBinding, PlaylistViewModel>() {
     override val viewModel: PlaylistViewModel by viewModel()
 
-    private lateinit var playlistAdapter : PlaylistAdapter
+    private lateinit var playlistAdapter: PlaylistAdapter
 
 
     override fun inflateViewBinding(
@@ -58,15 +60,15 @@ class PlaylistFragment : BaseFragment<FragmentPlaylistBinding, PlaylistViewModel
             if (it) makeRequest()
         }
 
-        viewModel.getPlaylistDb.observe(viewLifecycleOwner){
-            Log.e("TAG", "DataBase: ${it.data}" )
+        viewModel.getPlaylistDb.observe(viewLifecycleOwner) {
+            Log.e("TAG", "DataBase: ${it.data}")
         }
     }
 
     private fun makeRequest() {
-        viewModel.playlist.observe(viewLifecycleOwner){
+        viewModel.playlist.observe(viewLifecycleOwner) {
             binding.progress.isVisible = it.status == Status.LOADING
-            when(it.status) {
+            when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { it1 -> viewModel.setPlaylistDb(it1) }
                     playlistAdapter.addData(it.data?.items ?: emptyList())
@@ -78,8 +80,12 @@ class PlaylistFragment : BaseFragment<FragmentPlaylistBinding, PlaylistViewModel
         }
     }
 
-    private fun onItemClick(id: String, item: PlaylistItem) {
-        findNavController().navigate(R.id.detailFragment, bundleOf("id" to id, "item" to item))
+    private fun onItemClick(item: Item, playlistItem: PlaylistItem) {
+        findNavController().navigate(
+            R.id.detailFragment,
+            bundleOf(BundleKeys.PLAYLIST_TO_DETAIL_KEY to item.id,
+                BundleKeys.PLAYLIST_ITEM_KEY to playlistItem)
+        )
     }
 
 }
