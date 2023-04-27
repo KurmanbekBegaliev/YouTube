@@ -23,8 +23,6 @@ class MainActivity : AppCompatActivity() {
                 binding.contentNoInternet.root.visibility = View.VISIBLE
             }
         }
-
     }
-
 
 }
